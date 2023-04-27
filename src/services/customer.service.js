@@ -1,3 +1,6 @@
+const cookieParser = require('cookie-parser');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 function CustomerService(customerModel) {
 
     this.customerModel = customerModel
@@ -27,9 +30,34 @@ function CustomerService(customerModel) {
         });
     }
 
+    this.findByEmail =async function (email){
+        const user = await this.customerModel.findOne({
+            where: {
+                email: email
+            }
+        })
+        return user
+    }
+
     this.create = async function (customer, response) {
         try {
-            return await this.customerModel.create(customer);
+            this.customerModel.findOne({
+                where: {
+                    email: customer.email
+                }
+            }).then(async user => {
+                if (user) {
+                    response.status(409).json("Email Already Exist")
+                } else {
+                    customer.password = await bcrypt.hash(customer.password, 10)
+                    const user = await this.customerModel.create(customer)
+                    delete user.dataValues.password
+                    const expiresIn = 60 * 60 * 24 * 30; // 1 month
+                    const token = jwt.sign(user.dataValues, process.env.ACCESS_TOKEN_SECRET, {expiresIn});
+                    response.cookie('token', token, { httpOnly: true });
+                    response.status(201).json(user)
+                }
+            })
         } catch (error) {
             console.log(error)
             response.status(400).json("Can't Create New Customer")
