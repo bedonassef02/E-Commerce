@@ -1,24 +1,23 @@
 const User = require('../models/user.model');
 const jwt = require('jsonwebtoken');
-const {UserCreationService, UserAuthenticationService, UserUpdateService, UserDeletionService} = require("../services/user.service");
 const createToken = async (user) => {
     delete user.password
     const expiresIn = '30d'; // 30 days
     return await jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {expiresIn})
 }
 
-const setCookie = (token,response)=>{
+const setCookie = (token, response)=>{
     response.cookie('token', token, {maxAge: 2592000000, httpOnly: true})
 }
 
 class UserRegistrationController {
-    constructor() {
-        this.userCreationService = new UserCreationService();
+    constructor(userCreationService) {
+        UserRegistrationController.userCreationService = userCreationService;
     }
 
     async register(request, response) {
         const {username, email, password} = request.body;
-        const user = await this.userCreationService.createUser(new User({username, email, password}));
+        const user = await UserRegistrationController.userCreationService.createUser(new User({username, email, password}));
         const token = await createToken(user)
         setCookie(token,response)
         response.status(201).json({user, token: token});
@@ -26,8 +25,8 @@ class UserRegistrationController {
 }
 
 class UserAuthenticationController {
-    constructor() {
-        UserAuthenticationController.userAuthenticationService = new UserAuthenticationService();
+    constructor(userAuthenticationService) {
+        UserAuthenticationController.userAuthenticationService = userAuthenticationService;
     }
 
     async login(request, response) {
@@ -40,8 +39,8 @@ class UserAuthenticationController {
 }
 
 class UserProfileController {
-    constructor() {
-        this.userUpdateService = new UserUpdateService();
+    constructor(userUpdateService) {
+        this.userUpdateService = userUpdateService;
     }
 
     async updateProfile(request, response) {
@@ -53,8 +52,8 @@ class UserProfileController {
 }
 
 class UserDeletionController {
-    constructor() {
-        this.userDeletionService = new UserDeletionService();
+    constructor(userDeletionService) {
+        this.userDeletionService = userDeletionService;
     }
 
     async deleteAccount(request, response) {

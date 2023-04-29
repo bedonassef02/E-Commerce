@@ -48,7 +48,7 @@ class UserUpdateService {
 }
 
 class UserDeletionService {
-    async deleteUser(id) {
+    async deleteCategory(id) {
         await User.destroy({where: {id}});
     }
 }
