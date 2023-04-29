@@ -1,6 +1,5 @@
 const Category = require('../models/category.model');
 const bcrypt = require("bcrypt");
-const User = require("../models/user.model");
 
 class CategoryService {
 

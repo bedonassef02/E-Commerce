@@ -6,7 +6,7 @@ const createToken = async (user) => {
     return await jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {expiresIn})
 }
 
-const setCookie = (token, response)=>{
+const setCookie = (token, response) => {
     response.cookie('token', token, {maxAge: 2592000000, httpOnly: true})
 }
 
@@ -17,10 +17,18 @@ class UserRegistrationController {
 
     async register(request, response) {
         const {username, email, password} = request.body;
-        const user = await UserRegistrationController.userCreationService.createUser(new User({username, email, password}));
-        const token = await createToken(user)
-        setCookie(token,response)
-        response.status(201).json({user, token: token});
+        const user = await UserRegistrationController.userCreationService.createUser(new User({
+            username,
+            email,
+            password
+        }));
+        if (!user) {
+            response.status(409).json("Email or password not valid")
+        } else {
+            const token = await createToken(user)
+            setCookie(token, response)
+            response.status(201).json({user, token: token});
+        }
     }
 }
 
@@ -33,7 +41,7 @@ class UserAuthenticationController {
         const {email, password} = request.body;
         const user = await UserAuthenticationController.userAuthenticationService.checkUser(new User({email, password}))
         const token = await createToken(user)
-        setCookie(token,response)
+        setCookie(token, response)
         response.status(201).json({user, token: token});
     }
 }

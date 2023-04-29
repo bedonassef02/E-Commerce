@@ -9,7 +9,7 @@ class UserCreationService {
             const createdUser = await User.create(user);
             return createdUser.toJSON();
         } catch (error) {
-            return error
+            return false
         }
     }
 
