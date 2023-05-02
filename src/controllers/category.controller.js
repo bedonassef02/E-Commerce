@@ -1,5 +1,4 @@
 const Category = require('../models/category.model');
-const User = require("../models/user.model");
 
 class CategoryController {
     constructor(categoryService) {

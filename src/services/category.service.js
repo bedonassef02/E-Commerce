@@ -1,5 +1,4 @@
 const Category = require('../models/category.model');
-const bcrypt = require("bcrypt");
 
 class CategoryService {
 
