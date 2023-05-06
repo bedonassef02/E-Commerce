@@ -1,7 +1,12 @@
 const Category = require('../models/category.model');
+const {IBasicController} = require("./crud/basic.controller");
+const {IDeletionController} = require("./crud/deletion.controller");
+const {ICreationController} = require("./crud/creation.controller");
+const {IUpdatingController} = require("./crud/updating.controller");
 
-class CategoryController {
+class CategoryController extends IBasicController {
     constructor(categoryService) {
+        super();
         CategoryController.categoryService = categoryService;
     }
 
@@ -10,27 +15,29 @@ class CategoryController {
         response.status(200).json(categories)
     }
 
-    async getCategoryById(request, response) {
+    async show(request, response) {
         const {id} = request.params
         const category = await CategoryController.categoryService.getCategoryById(id)
         response.status(200).json(category)
     }
 }
 
-class CategoryDeletionController {
+class CategoryDeletionController extends IDeletionController {
     constructor(categoryDeletionService) {
+        super()
         CategoryDeletionController.categoryDeletionService = categoryDeletionService;
     }
 
-    async deleteCategory(request, response) {
+    async destroy(request, response) {
         const {id} = request.params
         await CategoryDeletionController.categoryDeletionService.deleteCategory(id);
         response.status(204).end();
     }
 }
 
-class CategoryCreationController {
+class CategoryCreationController extends ICreationController {
     constructor(categoryCreationService) {
+        super()
         CategoryCreationController.categoryCreationService = categoryCreationService;
     }
 
@@ -41,12 +48,13 @@ class CategoryCreationController {
     }
 }
 
-class CategoryUpdateController {
+class CategoryUpdateController extends IUpdatingController {
     constructor(categoryUpdateService) {
+        super()
         CategoryUpdateController.categoryUpdateService = categoryUpdateService;
     }
 
-    async updateCategory(request, response) {
+    async update(request, response) {
         const {id} = request.params;
         const {name} = request.body;
         const category = await CategoryUpdateController.categoryUpdateService.updateCategory(new Category({id, name}));

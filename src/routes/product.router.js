@@ -38,9 +38,12 @@ const upload = multer({
 })
 
 router.get("/", productController.index);
-router.post("/", upload.single('image'), productCreationController.create)
-router.get("/:id", productController.getProductById);
-router.delete("/:id", productDeletionController.deleteProduct)
-router.put("/:id", upload.single('image'), productUpdateController.updateProduct)
+
+router.post("/", validateToken.checkAdminToken, upload.single('image'), productCreationController.create)
+
+router.get("/:id", productController.show);
+
+router.delete("/:id", validateToken.checkAdminToken, productDeletionController.destroy)
+router.put("/:id", validateToken.checkAdminToken, upload.single('image'), productUpdateController.update)
 
 module.exports = router;

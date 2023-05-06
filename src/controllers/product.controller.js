@@ -1,8 +1,12 @@
 const Product = require('../models/product.model');
-const Category = require("../models/category.model");
+const {IBasicController} = require("./crud/basic.controller");
+const {ICreationController} = require("./crud/creation.controller");
+const {IUpdatingController} = require("./crud/updating.controller");
+const {IDeletionController} = require("./crud/deletion.controller");
 
-class ProductController {
+class ProductController extends IBasicController{
     constructor(productService) {
+        super()
         ProductController.productService = productService;
     }
 
@@ -11,16 +15,17 @@ class ProductController {
         response.status(200).json(categories)
     }
 
-    async getProductById(request, response) {
+    async show(request, response) {
         const {id} = request.params
         const product = await ProductController.productService.getProductById(id)
         response.status(200).json(product)
     }
 }
 
-class ProductCreationController {
+class ProductCreationController extends ICreationController{
 
     constructor(productCreationService) {
+        super()
         ProductCreationController.categoryCreationService = productCreationService;
     }
 
@@ -38,12 +43,13 @@ class ProductCreationController {
     }
 }
 
-class ProductUpdateController {
+class ProductUpdateController extends IUpdatingController{
     constructor(productUpdateService) {
+        super()
         ProductUpdateController.productUpdateService = productUpdateService;
     }
 
-    async updateProduct(request, response) {
+    async update(request, response) {
         const {id} = request.params;
         const {filename} = request.file
         const {name, description, category_id, price} = request.body;
@@ -59,12 +65,13 @@ class ProductUpdateController {
     }
 }
 
-class ProductDeletionController {
+class ProductDeletionController extends IDeletionController{
     constructor(categoryDeletionService) {
+        super()
         ProductDeletionController.productDeletionService = categoryDeletionService;
     }
 
-    async deleteProduct(request, response) {
+    async destroy(request, response) {
         const {id} = request.params
         await ProductDeletionController.productDeletionService.deleteProduct(id);
         response.status(204).end();

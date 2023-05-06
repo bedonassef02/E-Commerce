@@ -40,9 +40,13 @@ class UserAuthenticationController {
     async login(request, response) {
         const {email, password} = request.body;
         const user = await UserAuthenticationController.userAuthenticationService.checkUser(new User({email, password}))
-        const token = await createToken(user)
-        setCookie(token, response)
-        response.status(201).json({user, token: token});
+        try {
+            const token = await createToken(user);
+            setCookie(token, response)
+            response.status(201).json({user, token: token});
+        } catch (e) {
+            response.status(404).json({"Login Error ": e})
+        }
     }
 }
 

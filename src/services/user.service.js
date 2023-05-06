@@ -23,7 +23,7 @@ class UserAuthenticationService {
         user = user.dataValues
         const {email} = user
         try {
-            const result = await User.findOne({where: {email}});
+            const result = await User.findOne({where: {email:email}});
             if (result && await this.#checkPassword(user.password, result.dataValues.password)) {
                 return result.toJSON();
             }else{
@@ -56,6 +56,6 @@ class UserDeletionService {
 module.exports = {
     UserCreationService,
     UserAuthenticationService,
-    UserUpdateService,
-    UserDeletionService
+    // UserUpdateService,
+    // UserDeletionService
 };

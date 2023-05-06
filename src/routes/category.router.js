@@ -24,10 +24,11 @@ const categoryCreationController = new CategoryCreationController(new CategoryCr
 const categoryDeletionController = new CategoryDeletionController(new CategoryDeletionService());
 
 router.get("/", categoryController.index);
-router.get("/:id", categoryController.getCategoryById);
-
 router.post("/", validateToken.checkAdminToken, categoryCreationController.create);
-router.put("/:id", validateToken.checkAdminToken, categoryUpdateController.updateCategory);
-router.delete("/:id", validateToken.checkAdminToken, categoryDeletionController.deleteCategory);
+
+router.get("/:id", categoryController.show);
+
+router.put("/:id", validateToken.checkAdminToken, categoryUpdateController.update);
+router.delete("/:id", validateToken.checkAdminToken, categoryDeletionController.destroy);
 
 module.exports = router;
