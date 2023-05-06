@@ -1,8 +1,12 @@
 const Product = require('../models/product.model');
+const {IBasicService} = require("./crud/basic.service");
+const {ICreationService} = require("./crud/creation.service");
+const {IDeletionService} = require("./crud/deletion.service");
+const {IUpdatingService} = require("./crud/updating.service");
 
-class ProductService {
+class ProductService extends IBasicService{
 
-    async getAllProducts() {
+    async getAll() {
         try {
             const products = await Product.findAll()
             return products
@@ -11,7 +15,7 @@ class ProductService {
         }
     }
 
-    async getProductById(id) {
+    async getById(id) {
         try {
             const product = await Product.findOne({where: {id}})
             return product
@@ -21,8 +25,8 @@ class ProductService {
     }
 }
 
-class ProductCreationService {
-    async createProduct(product) {
+class ProductCreationService extends ICreationService{
+    async create(product) {
         product = product.dataValues
         try {
             const createdProduct = await Product.create(product);
@@ -34,14 +38,14 @@ class ProductCreationService {
 
 }
 
-class ProductDeletionService {
-    async deleteProduct(id) {
+class ProductDeletionService extends IDeletionService{
+    async deleteById(id) {
         await Product.destroy({where: {id}});
     }
 }
 
-class ProductUpdateService {
-    async updateProduct(product) {
+class ProductUpdateService extends IUpdatingService{
+    async update(product) {
         try {
             product = product.dataValues
             const {id} = product;

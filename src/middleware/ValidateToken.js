@@ -1,15 +1,5 @@
-const jwt = require("jsonwebtoken")
 
-const checkToken = async (request) => {
-    try {
-        const BearerToken = request.headers.authorization
-        const token = BearerToken.split(" ")[1]
-        const decodedToken = await jwt.decode(token, process.env.ACCESS_TOKEN_SECRET)
-        return decodedToken
-    } catch (e) {
-        return false
-    }
-}
+const {checkToken} = require("../services/token.service");
 
 class ValidateToken {
 

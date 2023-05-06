@@ -53,6 +53,7 @@ class UserDeletionService {
     }
 }
 
+
 module.exports = {
     UserCreationService,
     UserAuthenticationService,

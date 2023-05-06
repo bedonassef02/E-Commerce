@@ -1,19 +1,9 @@
-const jwt = require("jsonwebtoken");
+
 const {IBasicController} = require("./crud/basic.controller");
 const {ICreationController} = require("./crud/creation.controller");
 const {IDeletionController} = require("./crud/deletion.controller");
 const {IUpdatingController} = require("./crud/updating.controller");
-
-const checkToken = async (request) => {
-    try {
-        const BearerToken = request.headers.authorization
-        const token = BearerToken.split(" ")[1]
-        const decodedToken = await jwt.decode(token, process.env.ACCESS_TOKEN_SECRET)
-        return decodedToken
-    } catch (e) {
-        return false
-    }
-}
+const {checkToken} = require("../services/token.service");
 
 class OrderController extends IBasicController {
     constructor(orderService) {

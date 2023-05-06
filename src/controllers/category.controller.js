@@ -11,13 +11,13 @@ class CategoryController extends IBasicController {
     }
 
     async index(request, response) {
-        const categories = await CategoryController.categoryService.getAllCategories()
+        const categories = await CategoryController.categoryService.getAll()
         response.status(200).json(categories)
     }
 
     async show(request, response) {
         const {id} = request.params
-        const category = await CategoryController.categoryService.getCategoryById(id)
+        const category = await CategoryController.categoryService.getById(id)
         response.status(200).json(category)
     }
 }
@@ -30,7 +30,7 @@ class CategoryDeletionController extends IDeletionController {
 
     async destroy(request, response) {
         const {id} = request.params
-        await CategoryDeletionController.categoryDeletionService.deleteCategory(id);
+        await CategoryDeletionController.categoryDeletionService.deleteById(id);
         response.status(204).end();
     }
 }
@@ -43,7 +43,7 @@ class CategoryCreationController extends ICreationController {
 
     async create(request, response) {
         const {name} = request.body;
-        const category = await CategoryCreationController.categoryCreationService.createCategory(new Category({name}));
+        const category = await CategoryCreationController.categoryCreationService.create(new Category({name}));
         response.status(201).json({category});
     }
 }
@@ -57,7 +57,7 @@ class CategoryUpdateController extends IUpdatingController {
     async update(request, response) {
         const {id} = request.params;
         const {name} = request.body;
-        const category = await CategoryUpdateController.categoryUpdateService.updateCategory(new Category({id, name}));
+        const category = await CategoryUpdateController.categoryUpdateService.update(new Category({id, name}));
         response.status(200).json(category);
     }
 }

@@ -1,14 +1,8 @@
 const User = require('../models/user.model');
-const jwt = require('jsonwebtoken');
-const createToken = async (user) => {
-    delete user.password
-    const expiresIn = '30d'; // 30 days
-    return await jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {expiresIn})
-}
+const {createToken, setCookie} = require("../services/token.service");
 
-const setCookie = (token, response) => {
-    response.cookie('token', token, {maxAge: 2592000000, httpOnly: true})
-}
+
+
 
 class UserRegistrationController {
     constructor(userCreationService) {
