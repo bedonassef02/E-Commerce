@@ -24,11 +24,11 @@ const orderUpdateController = new OrderUpdateController(new OrderUpdateService()
 
 router.get("/", orderController.index);
 
-router.post("/", validateToken.checkAdminToken, orderCreationController.create);
+router.post("/", validateToken.checkUserToken, orderCreationController.create);
 
 router.get("/:id", orderController.show);
 
-router.delete("/:id", validateToken.checkAdminToken, orderDeletionController.destroy);
-router.put("/:id", validateToken.checkAdminToken, orderUpdateController.update);
+router.delete("/:id", validateToken.checkUserToken, orderDeletionController.destroy);
+router.put("/:id", validateToken.checkUserToken, orderUpdateController.update);
 
 module.exports = router;

@@ -39,24 +39,7 @@ class UserAuthenticationService {
     }
 }
 
-class UserUpdateService {
-    async updateUser(user) {
-        const {id} = user;
-        await User.update(user, {where: {id}});
-        return user;
-    }
-}
-
-class UserDeletionService {
-    async deleteCategory(id) {
-        await User.destroy({where: {id}});
-    }
-}
-
-
 module.exports = {
     UserCreationService,
     UserAuthenticationService,
-    // UserUpdateService,
-    // UserDeletionService
 };

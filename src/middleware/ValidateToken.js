@@ -7,7 +7,6 @@ class ValidateToken {
     async checkAdminToken(request, response, next) {
         const token = await checkToken(request)
         if (token && token.type == "admin") {
-            console.log(token)
             next()
         } else {
             response.status(401).json("You are not Authorized")

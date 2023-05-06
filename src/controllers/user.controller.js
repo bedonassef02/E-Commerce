@@ -2,8 +2,6 @@ const User = require('../models/user.model');
 const {createToken, setCookie} = require("../services/token.service");
 
 
-
-
 class UserRegistrationController {
     constructor(userCreationService) {
         UserRegistrationController.userCreationService = userCreationService;
@@ -14,7 +12,8 @@ class UserRegistrationController {
         const user = await UserRegistrationController.userCreationService.createUser(new User({
             username,
             email,
-            password
+            password,
+            type: "user"
         }));
         if (!user) {
             response.status(409).json("Email or password not valid")
