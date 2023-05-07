@@ -37,13 +37,13 @@ const upload = multer({
     storage: storage
 })
 
-router.get("/", productController.index);
+router.get("/", productController.index.bind(productController));
 
-router.post("/", validateToken.checkAdminToken, upload.single('image'), productCreationController.create)
+router.post("/", validateToken.checkAdminToken, upload.single('image'), productCreationController.create.bind(productCreationController))
 
-router.get("/:id", productController.show);
+router.get("/:id", productController.show.bind(productController));
 
-router.delete("/:id", validateToken.checkAdminToken, productDeletionController.destroy)
-router.put("/:id", validateToken.checkAdminToken, upload.single('image'), productUpdateController.update)
+router.delete("/:id", validateToken.checkAdminToken, productDeletionController.destroy.bind(productDeletionController))
+router.put("/:id", validateToken.checkAdminToken, upload.single('image'), productUpdateController.update.bind(productUpdateController))
 
 module.exports = router;

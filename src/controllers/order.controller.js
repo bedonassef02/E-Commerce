@@ -26,13 +26,13 @@ class OrderController extends IBasicController {
 class OrderCreationController extends ICreationController {
     constructor(orderCreationService) {
         super()
-        OrderCreationController.orderCreationService = orderCreationService;
+        this.orderCreationService = orderCreationService;
     }
 
     async create(request, response) {
         const {order} = request.body;
         const token = await checkToken(request)
-        const updatedOrder = await OrderCreationController.orderCreationService.createOrder({
+        const updatedOrder = await this.orderCreationService.createOrder({
             ...order,
             user_id: token.id
         });
@@ -43,12 +43,12 @@ class OrderCreationController extends ICreationController {
 class OrderDeletionController extends IDeletionController {
     constructor(orderDeletionService) {
         super()
-        OrderDeletionController.orderDeletionService = orderDeletionService;
+        this.orderDeletionService = orderDeletionService;
     }
 
     async destroy(request, response) {
         const {id} = request.params
-        await OrderDeletionController.orderDeletionService.deleteOrder(id);
+        await this.orderDeletionService.deleteOrder(id);
         response.status(204).end();
     }
 }
@@ -56,14 +56,14 @@ class OrderDeletionController extends IDeletionController {
 class OrderUpdateController extends IUpdatingController {
     constructor(orderUpdateService) {
         super()
-        OrderUpdateController.orderUpdateService = orderUpdateService;
+        this.orderUpdateService = orderUpdateService;
     }
 
     async update(request, response) {
         const {id} = request.params;
         const {order} = request.body;
 
-        const updatedOrder = await OrderUpdateController.orderUpdateService.updateOrder({
+        const updatedOrder = await this.orderUpdateService.updateOrder({
             ...order,
             order_id: id
         });

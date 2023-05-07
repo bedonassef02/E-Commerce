@@ -4,17 +4,12 @@ const {createToken, setCookie} = require("../services/token.service");
 
 class UserRegistrationController {
     constructor(userCreationService) {
-        UserRegistrationController.userCreationService = userCreationService;
+        this.userCreationService = userCreationService;
     }
 
     async register(request, response) {
         const {username, email, password} = request.body;
-        const user = await UserRegistrationController.userCreationService.createUser(new User({
-            username,
-            email,
-            password,
-            type: "user"
-        }));
+        const user = await this.userCreationService.create(new User({username, email, password, type: "user"}));
         if (!user) {
             response.status(409).json("Email or password not valid")
         } else {
@@ -27,12 +22,12 @@ class UserRegistrationController {
 
 class UserAuthenticationController {
     constructor(userAuthenticationService) {
-        UserAuthenticationController.userAuthenticationService = userAuthenticationService;
+        this.userAuthenticationService = userAuthenticationService;
     }
 
     async login(request, response) {
         const {email, password} = request.body;
-        const user = await UserAuthenticationController.userAuthenticationService.checkUser(new User({email, password}))
+        const user = await this.userAuthenticationService.checkUser(new User({email, password}))
         try {
             const token = await createToken(user);
             setCookie(token, response)
@@ -43,33 +38,8 @@ class UserAuthenticationController {
     }
 }
 
-class UserProfileController {
-    constructor(userUpdateService) {
-        this.userUpdateService = userUpdateService;
-    }
-
-    async updateProfile(request, response) {
-        const {id} = request.params;
-        const {username, email} = request.body;
-        const user = await this.userUpdateService.updateUser(new User({id, username, email}));
-        response.status(200).json(user);
-    }
-}
-
-class UserDeletionController {
-    constructor(userDeletionService) {
-        this.userDeletionService = userDeletionService;
-    }
-
-    async deleteAccount(request, response) {
-        await this.userDeletionService.deleteUser(request.params.id);
-        response.status(204).end();
-    }
-}
 
 module.exports = {
     UserRegistrationController,
     UserAuthenticationController,
-    UserProfileController,
-    UserDeletionController
 };

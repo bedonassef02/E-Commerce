@@ -22,13 +22,13 @@ const orderCreationController = new OrderCreationController(new OrderCreationSer
 const orderDeletionController = new OrderDeletionController(new OrderDeletionService());
 const orderUpdateController = new OrderUpdateController(new OrderUpdateService());
 
-router.get("/", orderController.index);
+router.get("/", orderController.index.bind(orderController));
 
-router.post("/", validateToken.checkUserToken, orderCreationController.create);
+router.post("/", validateToken.checkUserToken, orderCreationController.create.bind(orderCreationController));
 
-router.get("/:id", orderController.show);
+router.get("/:id", orderController.show.bind(orderController));
 
-router.delete("/:id", validateToken.checkUserToken, orderDeletionController.destroy);
-router.put("/:id", validateToken.checkUserToken, orderUpdateController.update);
+router.delete("/:id", validateToken.checkUserToken, orderDeletionController.destroy.bind(orderDeletionController));
+router.put("/:id", validateToken.checkUserToken, orderUpdateController.update.bind(orderUpdateController));
 
 module.exports = router;

@@ -1,8 +1,9 @@
 const User = require('../models/user.model');
 const bcrypt = require('bcrypt');
+const {ICreationService} = require("./crud/creation.service");
 
-class UserCreationService {
-    async createUser(user) {
+class UserCreationService extends ICreationService{
+    async create(user) {
         user = user.dataValues
         user.password = await this.#hashPassword(user.password)
         try {

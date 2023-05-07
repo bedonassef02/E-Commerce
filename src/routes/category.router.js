@@ -23,12 +23,12 @@ const categoryUpdateController = new CategoryUpdateController(new CategoryUpdate
 const categoryCreationController = new CategoryCreationController(new CategoryCreationService());
 const categoryDeletionController = new CategoryDeletionController(new CategoryDeletionService());
 
-router.get("/", categoryController.index);
-router.post("/", validateToken.checkAdminToken, categoryCreationController.create);
+router.get("/", categoryController.index.bind(categoryController));
+router.post("/", validateToken.checkAdminToken, categoryCreationController.create.bind(categoryCreationController));
 
-router.get("/:id", categoryController.show);
+router.get("/:id", categoryController.show.bind(categoryController));
 
-router.put("/:id", validateToken.checkAdminToken, categoryUpdateController.update);
-router.delete("/:id", validateToken.checkAdminToken, categoryDeletionController.destroy);
+router.put("/:id", validateToken.checkAdminToken, categoryUpdateController.update.bind(categoryUpdateController));
+router.delete("/:id", validateToken.checkAdminToken, categoryDeletionController.destroy.bind(categoryDeletionController));
 
 module.exports = router;

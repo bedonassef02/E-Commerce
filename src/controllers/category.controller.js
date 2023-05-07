@@ -7,17 +7,17 @@ const {IUpdatingController} = require("./crud/updating.controller");
 class CategoryController extends IBasicController {
     constructor(categoryService) {
         super();
-        CategoryController.categoryService = categoryService;
+        this.categoryService = categoryService;
     }
 
     async index(request, response) {
-        const categories = await CategoryController.categoryService.getAll()
+        const categories = await this.categoryService.getAll()
         response.status(200).json(categories)
     }
 
     async show(request, response) {
         const {id} = request.params
-        const category = await CategoryController.categoryService.getById(id)
+        const category = await this.categoryService.getById(id)
         response.status(200).json(category)
     }
 }
@@ -25,12 +25,12 @@ class CategoryController extends IBasicController {
 class CategoryDeletionController extends IDeletionController {
     constructor(categoryDeletionService) {
         super()
-        CategoryDeletionController.categoryDeletionService = categoryDeletionService;
+        this.categoryDeletionService = categoryDeletionService;
     }
 
     async destroy(request, response) {
         const {id} = request.params
-        await CategoryDeletionController.categoryDeletionService.deleteById(id);
+        await this.categoryDeletionService.deleteById(id);
         response.status(204).end();
     }
 }
@@ -38,12 +38,12 @@ class CategoryDeletionController extends IDeletionController {
 class CategoryCreationController extends ICreationController {
     constructor(categoryCreationService) {
         super()
-        CategoryCreationController.categoryCreationService = categoryCreationService;
+        this.categoryCreationService = categoryCreationService;
     }
 
     async create(request, response) {
         const {name} = request.body;
-        const category = await CategoryCreationController.categoryCreationService.create(new Category({name}));
+        const category = await this.categoryCreationService.create(new Category({name}));
         response.status(201).json({category});
     }
 }
@@ -51,13 +51,13 @@ class CategoryCreationController extends ICreationController {
 class CategoryUpdateController extends IUpdatingController {
     constructor(categoryUpdateService) {
         super()
-        CategoryUpdateController.categoryUpdateService = categoryUpdateService;
+        this.categoryUpdateService = categoryUpdateService;
     }
 
     async update(request, response) {
         const {id} = request.params;
         const {name} = request.body;
-        const category = await CategoryUpdateController.categoryUpdateService.update(new Category({id, name}));
+        const category = await this.categoryUpdateService.update(new Category({id, name}));
         response.status(200).json(category);
     }
 }
