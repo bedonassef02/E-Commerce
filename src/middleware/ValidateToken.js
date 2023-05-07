@@ -1,5 +1,6 @@
 
 const {checkToken} = require("../services/token.service");
+const {UNAUTHORIZED} = require("../../constants");
 
 class ValidateToken {
 
@@ -9,7 +10,7 @@ class ValidateToken {
         if (token && token.type == "admin") {
             next()
         } else {
-            response.status(401).json("You are not Authorized")
+            response.status(UNAUTHORIZED).json("You are not Authorized")
         }
     }
 
@@ -18,7 +19,7 @@ class ValidateToken {
         if (token && token.type == "user") {
             next()
         } else {
-            response.status(401).json("You are not Authorized")
+            response.status(UNAUTHORIZED).json("You are not Authorized")
         }
     }
 
