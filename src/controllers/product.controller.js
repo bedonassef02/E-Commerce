@@ -3,6 +3,7 @@ const {IBasicController} = require("./crud/basic.controller");
 const {ICreationController} = require("./crud/creation.controller");
 const {IUpdatingController} = require("./crud/updating.controller");
 const {IDeletionController} = require("./crud/deletion.controller");
+const {OK, CREATED, DELETED} = require("../../constants");
 
 class ProductController extends IBasicController {
     constructor(productService) {
@@ -12,13 +13,13 @@ class ProductController extends IBasicController {
 
     async index(request, response) {
         const categories = await this.productService.getAll()
-        response.status(200).json(categories)
+        response.status(OK).json(categories)
     }
 
     async show(request, response) {
         const {id} = request.params
         const product = await this.productService.getById(id)
-        response.status(200).json(product)
+        response.status(OK).json(product)
     }
 }
 
@@ -39,7 +40,7 @@ class ProductCreationController extends ICreationController {
             price,
             image_url: "images/" + filename
         }));
-        response.status(201).json({product});
+        response.status(CREATED).json({product});
     }
 }
 
@@ -61,7 +62,7 @@ class ProductUpdateController extends IUpdatingController {
             price,
             image_url: "images/" + filename
         }));
-        response.status(200).json(category);
+        response.status(OK).json(category);
     }
 }
 
@@ -74,7 +75,7 @@ class ProductDeletionController extends IDeletionController {
     async destroy(request, response) {
         const {id} = request.params
         await this.productDeletionService.deleteById(id);
-        response.status(204).end();
+        response.status(DELETED).end();
     }
 }
 

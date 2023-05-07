@@ -1,15 +1,12 @@
-class PaymentController {
 
-
-    async sayHi(name) {
-        return `Hi ${name}`
-    }
-
-    async index(req, res) {
-        res.json(await this.sayHi("Bedo"))
-    }
-
-
+class PaymentMethod {
+    processPayment(amount) {}
 }
 
-module.exports = {PaymentController}
+class CreditCardPayment extends PaymentMethod {
+    processPayment(amount) {}
+}
+
+class PayPalPayment extends PaymentMethod {
+    processPayment(amount) {}
+}

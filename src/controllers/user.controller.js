@@ -1,5 +1,6 @@
 const User = require('../models/user.model');
 const {createToken, setCookie} = require("../services/token.service");
+const {CREATED, OK, NOT_FOUND, CONFLICT} = require("../../constants");
 
 
 class UserRegistrationController {
@@ -11,11 +12,11 @@ class UserRegistrationController {
         const {username, email, password} = request.body;
         const user = await this.userCreationService.create(new User({username, email, password, type: "user"}));
         if (!user) {
-            response.status(409).json("Email or password not valid")
+            response.status(CONFLICT).json("Email or password not valid")
         } else {
             const token = await createToken(user)
             setCookie(token, response)
-            response.status(201).json({user, token: token});
+            response.status(CREATED).json({user, token: token});
         }
     }
 }
@@ -31,9 +32,9 @@ class UserAuthenticationController {
         try {
             const token = await createToken(user);
             setCookie(token, response)
-            response.status(201).json({user, token: token});
+            response.status(OK).json({user, token: token});
         } catch (e) {
-            response.status(404).json({"Login Error ": e})
+            response.status(NOT_FOUND).json({"Login Error ": e})
         }
     }
 }

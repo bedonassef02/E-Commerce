@@ -4,6 +4,7 @@ const {ICreationController} = require("./crud/creation.controller");
 const {IDeletionController} = require("./crud/deletion.controller");
 const {IUpdatingController} = require("./crud/updating.controller");
 const {checkToken} = require("../services/token.service");
+const {CREATED, DELETED, OK} = require("../../constants");
 
 class OrderController extends IBasicController {
     constructor(orderService) {
@@ -36,7 +37,7 @@ class OrderCreationController extends ICreationController {
             ...order,
             user_id: token.id
         });
-        response.status(201).json({order: updatedOrder});
+        response.status(CREATED).json({order: updatedOrder});
     }
 }
 
@@ -49,7 +50,7 @@ class OrderDeletionController extends IDeletionController {
     async destroy(request, response) {
         const {id} = request.params
         await this.orderDeletionService.deleteOrder(id);
-        response.status(204).end();
+        response.status(DELETED).end();
     }
 }
 
@@ -67,7 +68,7 @@ class OrderUpdateController extends IUpdatingController {
             ...order,
             order_id: id
         });
-        response.status(201).json({order: updatedOrder});
+        response.status(OK).json({order: updatedOrder});
     }
 }
 
